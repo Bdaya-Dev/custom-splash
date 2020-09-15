@@ -26,7 +26,7 @@ class BdayaCustomSplash extends StatefulWidget {
     @required this.backgroundBuilder,
     @required this.initFunction,
     this.shimmerBuilder,
-    this.animationEffect,
+    this.animationEffect = AnimationEffect.FadeIn,
     @required this.onNavigateTo,
     this.splashDuration = 3,
     @required this.logoBuilder,
@@ -53,8 +53,7 @@ class _BdayaCustomSplashState extends State<BdayaCustomSplash>
         parent: _animationController, curve: Curves.easeInCirc));
 
     _animationController.forward();
-    _initFuture =
-        widget.initFunction(); //.then((value) => widget.onNavigateTo(value));
+    _initFuture = widget.initFunction();
     startTime();
   }
 
@@ -69,7 +68,11 @@ class _BdayaCustomSplashState extends State<BdayaCustomSplash>
     return Timer(
       _duration,
       () {
-        _initFuture.then((value) => widget.onNavigateTo(value));
+        print('Timer Elapsed');
+        _initFuture.then((value) {
+          print('Future Done');
+          widget.onNavigateTo(value);
+        });
       },
     );
   }
@@ -111,7 +114,8 @@ class _BdayaCustomSplashState extends State<BdayaCustomSplash>
         return Scaffold(
           body: widget.backgroundBuilder(
             _buildAnimation(
-              widget.logoBuilder(),
+              widget.shimmerBuilder?.call(widget.logoBuilder()) ??
+                  widget.logoBuilder(),
             ),
           ),
         );
