@@ -13,6 +13,7 @@ enum AnimationEffect {
 }
 
 class BdayaCustomSplash extends StatefulWidget {
+  final Color backgroundColor;
   final Widget Function(Widget child) backgroundBuilder;
   final Future<Object> Function() initFunction;
   final Shimmer Function(Widget child) shimmerBuilder;
@@ -30,6 +31,7 @@ class BdayaCustomSplash extends StatefulWidget {
     @required this.onNavigateTo,
     this.splashDuration = 3,
     @required this.logoBuilder,
+    this.backgroundColor = Colors.white,
   }) : super(key: key);
 
   @override
@@ -112,6 +114,7 @@ class _BdayaCustomSplashState extends State<BdayaCustomSplash>
       future: _initFuture,
       builder: (context, snapshot) {
         return Scaffold(
+          backgroundColor: widget.backgroundColor,
           body: widget.backgroundBuilder(
             _buildAnimation(
               widget.shimmerBuilder?.call(widget.logoBuilder()) ??
