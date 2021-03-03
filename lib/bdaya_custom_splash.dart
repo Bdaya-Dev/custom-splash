@@ -14,23 +14,23 @@ enum AnimationEffect {
 
 class BdayaCustomSplash extends StatefulWidget {
   final Color backgroundColor;
-  final Widget Function(Widget child) backgroundBuilder;
+  final Widget Function(Widget? child) backgroundBuilder;
   final Future<Object> Function() initFunction;
-  final Shimmer Function(Widget child) shimmerBuilder;
+  final Shimmer Function(Widget child)? shimmerBuilder;
   final AnimationEffect animationEffect;
   final void Function(Object result) onNavigateTo;
   final int splashDuration;
   final Widget Function() logoBuilder;
 
   const BdayaCustomSplash({
-    Key key,
-    @required this.backgroundBuilder,
-    @required this.initFunction,
+    Key? key,
+    required this.backgroundBuilder,
+    required this.initFunction,
     this.shimmerBuilder,
     this.animationEffect = AnimationEffect.FadeIn,
-    @required this.onNavigateTo,
+    required this.onNavigateTo,
     this.splashDuration = 3,
-    @required this.logoBuilder,
+    required this.logoBuilder,
     this.backgroundColor = Colors.white,
   }) : super(key: key);
 
@@ -40,9 +40,9 @@ class BdayaCustomSplash extends StatefulWidget {
 
 class _BdayaCustomSplashState extends State<BdayaCustomSplash>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation _animation;
-  Future<Object> _initFuture;
+  late AnimationController _animationController;
+  late Animation _animation;
+  Future<Object>? _initFuture;
 
   @override
   void initState() {
@@ -71,7 +71,7 @@ class _BdayaCustomSplashState extends State<BdayaCustomSplash>
       _duration,
       () {
         print('Timer Elapsed');
-        _initFuture.then((value) {
+        _initFuture!.then((value) {
           print('Future Done');
           widget.onNavigateTo(value);
         });
@@ -79,15 +79,17 @@ class _BdayaCustomSplashState extends State<BdayaCustomSplash>
     );
   }
 
-  Widget _buildAnimation(Widget child) {
+  Widget? _buildAnimation(Widget child) {
     switch (widget.animationEffect) {
       case AnimationEffect.FadeIn:
         {
-          return FadeTransition(opacity: _animation, child: child);
+          return FadeTransition(
+              opacity: _animation as Animation<double>, child: child);
         }
       case AnimationEffect.ZoomIn:
         {
-          return ScaleTransition(scale: _animation, child: child);
+          return ScaleTransition(
+              scale: _animation as Animation<double>, child: child);
         }
       case AnimationEffect.ZoomOut:
         {
@@ -102,10 +104,10 @@ class _BdayaCustomSplashState extends State<BdayaCustomSplash>
         }
       case AnimationEffect.TopDown:
         {
-          return SizeTransition(sizeFactor: _animation, child: child);
+          return SizeTransition(
+              sizeFactor: _animation as Animation<double>, child: child);
         }
     }
-    return null;
   }
 
   @override
